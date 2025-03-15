@@ -1,0 +1,28 @@
+<div class="background-container">
+    <div class="weather-container">
+        <h1>Weather Forecast Details</h1>
+        <label for="city"><b>Select a city: </b></label>
+        <select (change)="onCityChange($event)">
+            <option value="">Select</option>
+            <option *ngFor="let city of cityList" [value]="city">{{ city }}</option>
+        </select>
+        <div *ngIf="showLoader" class="no-data"><h3>Loading...</h3></div>
+        <div *ngIf="weatherData && selectedCity && !showLoader">
+            <h2>Weather in {{ weatherData.city.name }}, {{ weatherData.city.country }}</h2>
+            <div class="forecast-container">
+                <div *ngFor="let forecast of dailyForecasts" class="forecast-card">
+                    <p><b>{{ forecast.dt_txt | date: 'EEEE, MMM d' }}</b></p>
+                    <img [src]="'https://openweathermap.org/img/wn/' + forecast.weather[0].icon + '@2x.png'"
+                        alt="Weather Icon">
+                    <p><b>Temp:</b> {{ forecast.main.temp }}°C</p>
+                    <p><b>Windspeed:</b> {{ forecast.wind.speed }} m/s</p>
+                    <p><b>Condition:</b> {{ forecast.weather[0].description }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="no-data" *ngIf="!weatherData && !showLoader">
+            <h3 *ngIf="!selectedCity">Please Select a City to display forecast</h3>
+            <h3 *ngIf="selectedCity">Data not found</h3>
+        </div>
+    </div>
+</div>
